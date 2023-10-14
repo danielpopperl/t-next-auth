@@ -22,7 +22,7 @@ export default async function SignIn() {
         <video width="320" height="240" id="myVideo2">
           <source
             src="https://iframe.mediadelivery.net/play/161168/3692e87b-e322-4bb5-bb8a-fb93f72523c8"
-            type="video/mp4"
+            type="video/webm"
           ></source>
         </video>
       </div>
