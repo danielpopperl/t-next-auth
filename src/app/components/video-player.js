@@ -29,6 +29,7 @@ export default function VideoPlayer({ src }) {
     const defaultOptions = {
       debug: true,
       controls: [
+        "play-large",
         "rewind",
         "play",
         "fast-forward",
@@ -43,7 +44,10 @@ export default function VideoPlayer({ src }) {
         "airplay",
         "fullscreen",
       ],
-      settings: ["quality"],
+      settings: ["quality", "speed"],
+      speed: { selected: 1, options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 4] },
+      iconUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/934px-Logo_of_Twitter.svg.png",
       quality: {
         default: 720,
         forced: true,
