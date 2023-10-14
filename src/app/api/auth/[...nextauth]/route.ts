@@ -42,12 +42,12 @@ const handler = NextAuth({
       return true;
     },
     async jwt({ token, user, session }) {
-      if (user) token.role = user.role;
+      // if (user) token.role = user.role;
 
       return token;
     },
     async session({ session, token, user }) {
-      const { iss, ...rest } = session;
+      const { ...rest } = session;
       // if (session?.user) {
       //   session.user.role = user.role;
       // }
