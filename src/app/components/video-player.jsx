@@ -160,7 +160,7 @@ export default function VideoPlayer({ src }) {
 
   return (
     <>
-      <video playsInline id="video-c" ref={videoRef} />
+      <video playsInline id="video-c" controls ref={videoRef} />
       <style jsx>{`
         video {
           max-width: 100%;
