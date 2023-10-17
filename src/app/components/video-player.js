@@ -7,6 +7,7 @@ import Plyr from "plyr";
 export default function VideoPlayer({ src }) {
   const videoRef = useRef(null);
   const player = useRef(null);
+  const [hlsLoad, setHlsLoad] = useState(false);
 
   let hls = new Hls();
   let abc = [];
@@ -95,14 +96,28 @@ export default function VideoPlayer({ src }) {
   useEffect(() => {
     const video = videoRef.current;
 
-    if (!video) return;
+    // if (!video) return;
 
-    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+    console.log(12456);
+    if (video && video.canPlayType("application/vnd.apple.mpegurl")) {
       // This will run in safari, where HLS is supported natively
       video.src = src;
-    } else if (Hls.isSupported()) {
-      // This will run in all other modern browsers
+    }
 
+    if (Hls.isSupported()) {
+      setHlsLoad(true);
+      // This will run in all other modern browsers
+    }
+
+    if (video && !Hls.isSupported()) {
+      console.error(
+        "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+      );
+    }
+  }, [src, videoRef]);
+
+  useEffect(() => {
+    if (hlsLoad) {
       defaultOptions = {
         debug: false,
         controls: controlsDefault,
@@ -124,7 +139,9 @@ export default function VideoPlayer({ src }) {
         },
       };
 
-      // video.controls = true;
+      video.controls = true;
+
+      hls.loadSource(src);
 
       hls.once(Hls.Events.LEVEL_LOADED, function () {
         if (hls.levels.length > 1 && abc.length < 1) {
@@ -133,23 +150,11 @@ export default function VideoPlayer({ src }) {
           });
 
           abc = abc.reverse();
+
+          hls.attachMedia(video);
+          player.current = new Plyr(video, defaultOptions);
         }
-
-        setHlsLoad(true);
       });
-    } else {
-      console.error(
-        "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
-      );
-    }
-    hls.loadSource(src);
-    hls.attachMedia(video);
-    player.current = new Plyr(video, defaultOptions);
-  }, [src, videoRef]);
-
-  useEffect(() => {
-    if (abc.length) {
-      console.log(12);
     }
     //   const a = setInterval(() => {
     //     if (!player.current.paused) {
@@ -160,11 +165,14 @@ export default function VideoPlayer({ src }) {
     //   }, 2000);
 
     //   return () => clearInterval(a);
-  }, [abc]);
+  }, [hlsLoad]);
 
   return (
     <>
-      <video id="video" playsInline controls ref={videoRef} />
+      <div>
+        {hlsLoad && <video id="video" playsInline controls ref={videoRef} />}
+      </div>
+
       <style jsx>{`
         video {
           max-width: 100%;
