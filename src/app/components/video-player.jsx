@@ -119,10 +119,10 @@ export default function VideoPlayer({ src }) {
         selected: 1,
         options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
       },
-      previewThumbnails: {
-        enabled: true,
-        src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
-      },
+      // previewThumbnails: {
+      //   enabled: true,
+      //   src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
+      // },
     };
 
     videoRef.current.controls = true;
@@ -162,12 +162,13 @@ export default function VideoPlayer({ src }) {
 
   return (
     <>
+      <div>oi</div>
       <video id="video-c" className="vjs-matrix" ref={videoRef} />
-      <style jsx>{`
+      {/* <style jsx>{`
         video {
           max-width: 100%;
         }
-      `}</style>
+      `}</style> */}
     </>
   );
 }
