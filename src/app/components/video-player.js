@@ -138,10 +138,9 @@ export default function VideoPlayer({ src }) {
           src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
         },
       };
-
-      hls.attachMedia(videoRef.current);
-      player = new Plyr(videoRef.current, defaultOptions);
     }
+    hls.attachMedia(videoRef.current);
+    player = new Plyr(videoRef.current, defaultOptions);
   }, [src, videoRef, setHlsLoad]);
 
   useEffect(() => {
