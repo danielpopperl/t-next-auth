@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import Plyr from "plyr";
@@ -13,15 +15,11 @@ export default function VideoPlayer({ src }) {
   let hls = new Hls({ maxBufferSize: 5 * 1000 * 1000 });
 
   function updateQUality(e) {
-    // console.log(abc);
-    // if (hls.levels.length > 1) {
-
     hls.levels.forEach((element, index) => {
       if (element.height == e) {
         hls.currentLevel = index;
       }
     });
-    // }
   }
 
   hls.once(Hls.Events.LEVEL_LOADED, function () {
@@ -119,17 +117,13 @@ export default function VideoPlayer({ src }) {
         selected: 1,
         options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
       },
-      // previewThumbnails: {
-      //   enabled: true,
-      //   src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
-      // },
+      previewThumbnails: {
+        enabled: true,
+        src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
+      },
     };
 
     videoRef.current.controls = true;
-
-    player = new Plyr(videoRef.current, defaultOptions);
-
-    hls.attachMedia(videoRef.current);
   });
 
   useEffect(() => {
@@ -143,6 +137,9 @@ export default function VideoPlayer({ src }) {
     } else if (Hls.isSupported()) {
       // This will run in all other modern browsers
       hls.loadSource(src);
+      player = new Plyr(videoRef.current, defaultOptions);
+
+      hls.attachMedia(videoRef.current);
     } else {
       console.error(
         "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
