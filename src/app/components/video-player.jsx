@@ -127,7 +127,7 @@ export default function VideoPlayer({ src }) {
   useEffect(() => {
     const video = videoRef.current;
 
-    if (!video) return;
+    // if (!video) return;
 
     if (video.canPlayType("application/vnd.apple.mpegurl")) {
       // This will run in safari, where HLS is supported natively
