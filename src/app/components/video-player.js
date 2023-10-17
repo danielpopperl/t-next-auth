@@ -134,12 +134,12 @@ export default function VideoPlayer({ src }) {
 
           abc = abc.reverse();
         }
-        hls.loadSource(src);
-        hls.attachMedia(video);
-        player.current = new Plyr(video, defaultOptions);
 
         setHlsLoad(true);
       });
+      hls.loadSource(src);
+      hls.attachMedia(video);
+      player.current = new Plyr(video, defaultOptions);
     } else {
       console.error(
         "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
