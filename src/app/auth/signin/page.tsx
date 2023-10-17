@@ -50,6 +50,7 @@ export default function Home() {
 
   return (
     <>
+      <VideoPlayer src={videoUrl} />
       {/* <Head>
         <title>Next.js & HLS.js</title>
         <link rel="icon" href="/favicon.ico" />
