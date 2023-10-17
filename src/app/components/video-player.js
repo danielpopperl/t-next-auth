@@ -126,8 +126,6 @@ export default function VideoPlayer({ src }) {
 
       // video.controls = true;
 
-      hls.loadSource(src);
-
       hls.once(Hls.Events.LEVEL_LOADED, function () {
         if (hls.levels.length > 1 && abc.length < 1) {
           hls.levels.forEach((element, index) => {
@@ -136,6 +134,7 @@ export default function VideoPlayer({ src }) {
 
           abc = abc.reverse();
 
+          hls.loadSource(src);
           hls.attachMedia(video);
           player.current = new Plyr(video, defaultOptions);
         }
