@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import Plyr from "plyr";
-import "plyr/dist/plyr.css";
 
 export default function VideoPlayer({ src }) {
   const videoRef = useRef(null);
