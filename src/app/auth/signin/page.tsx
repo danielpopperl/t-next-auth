@@ -16,9 +16,8 @@ export default function Home() {
     setVideoUrl(newvideoUrl);
   });
 
-  // "https://stream.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw.m3u8";
   let newvideoUrl =
-    "https://vz-0480b10f-62f.b-cdn.net/3692e87b-e322-4bb5-bb8a-fb93f72523c8/playlist.m3u8";
+    "https://stream.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw.m3u8";
 
   function openModal() {
     setIsOpen(true);
