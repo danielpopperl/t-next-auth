@@ -18,7 +18,10 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+          {children}
+        </body>
       </html>
     </AuthProvider>
   );
