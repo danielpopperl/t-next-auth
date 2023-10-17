@@ -40,7 +40,15 @@ export default function VideoPlayer({ src }) {
           setHlsLoad(abc.reverse());
         }
 
-        const controlsMobile = `
+        videoRef.current.controls = true;
+      });
+    } else {
+      console.error(
+        "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+      );
+    }
+
+    const controlsMobile = `
       <div class="plyr__controls_c">
 
       <div>
@@ -95,54 +103,46 @@ export default function VideoPlayer({ src }) {
   </div>
   `;
 
-        const controlsDefault = [
-          "play-large",
-          "rewind",
-          "play",
-          "fast-forward",
-          "progress",
-          "restart",
-          "current-time",
-          "mute",
-          "volume",
-          "captions",
-          "settings",
-          "pip",
-          "airplay",
-          "fullscreen",
-        ];
+    const controlsDefault = [
+      "play-large",
+      "rewind",
+      "play",
+      "fast-forward",
+      "progress",
+      "restart",
+      "current-time",
+      "mute",
+      "volume",
+      "captions",
+      "settings",
+      "pip",
+      "airplay",
+      "fullscreen",
+    ];
 
-        const defaultOptions = {
-          debug: false,
-          controls: controlsMobile,
-          settings: ["quality", "speed"],
-          quality: {
-            forced: true,
-            default: 720,
-            options: abc,
-            onChange: (e) => updateQUality(e),
-          },
-          speed: {
-            selected: 1,
-            options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-          },
-          previewThumbnails: {
-            enabled: true,
-            src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
-          },
-        };
+    const defaultOptions = {
+      debug: false,
+      controls: controlsMobile,
+      settings: ["quality", "speed"],
+      quality: {
+        forced: true,
+        default: 720,
+        options: abc,
+        onChange: (e) => updateQUality(e),
+      },
+      speed: {
+        selected: 1,
+        options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+      },
+      previewThumbnails: {
+        enabled: true,
+        src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
+      },
+    };
 
-        videoRef.current.controls = true;
+    player = new Plyr(videoRef.current, defaultOptions);
 
-        player = new Plyr(videoRef.current, defaultOptions);
-
-        hls.attachMedia(videoRef.current);
-      });
-    } else {
-      console.error(
-        "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
-      );
-    }
+    hls.attachMedia(videoRef.current);
   }, [src, videoRef, setHlsLoad]);
 
   useEffect(() => {
