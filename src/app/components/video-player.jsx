@@ -168,11 +168,11 @@ export default function VideoPlayer({ src }) {
           className="h-60"
           ref={videoRef}
         />
-        {/* <style jsx>{`
-        video {
-          max-width: 100%;
-        }
-      `}</style> */}
+        <style jsx>{`
+          video {
+            max-width: 100%;
+          }
+        `}</style>
         oi
       </div>
     </>
