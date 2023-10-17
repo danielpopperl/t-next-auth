@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import VideoPlayer2 from "../../components/video";
+import VideoPlayer2 from "../../components/video-player";
 import Modal from "react-modal";
 
 export default function Home() {
@@ -11,8 +11,6 @@ export default function Home() {
 
   useEffect(() => {
     console.log("comming");
-    // new Maxtap.Component({ content_id: "spiderman-4" }).init();
-    setIsWatchNow(true);
     setVideoUrl(newvideoUrl);
   });
 

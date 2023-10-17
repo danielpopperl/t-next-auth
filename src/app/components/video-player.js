@@ -29,7 +29,6 @@ export default function VideoPlayer({ src }) {
       video.src = src;
     } else if (Hls.isSupported()) {
       // This will run in all other modern browsers
-      hls.loadSource(src);
 
       hls.once(Hls.Events.LEVEL_LOADED, function () {
         if (hls.levels.length > 1) {
@@ -48,24 +47,24 @@ export default function VideoPlayer({ src }) {
       );
 
       const controlsMobile = `
-      <div class="plyr__controls_c">
+        <div class="plyr__controls_c">
+        
+        <div>
+        <div class="plyr__progress">
+        <input data-plyr="seek" type="range" min="0" max="100" step="0.01" value="0" aria-label="Seek">
+        <progress class="plyr__progress__buffer" min="0" max="100" value="0">% buffered</progress>
+        <span role="tooltip" class="plyr__tooltip">00:00</span>
+        </div>
+        </div>
       
-      <div>
-      <div class="plyr__progress">
-      <input data-plyr="seek" type="range" min="0" max="100" step="0.01" value="0" aria-label="Seek">
-      <progress class="plyr__progress__buffer" min="0" max="100" value="0">% buffered</progress>
-      <span role="tooltip" class="plyr__tooltip">00:00</span>
-      </div>
-      </div>
-      
-      <div class="plyr__controls_tools__c">
-      
-      <div class="plyr__timers_c">
-      <div class="plyr__time plyr__time--current" aria-label="Current time">00:00</div>
-      <div> &nbsp/&nbsp</div>
-      <div class="plyr__time plyr__time--duration" aria-label="Duration">00:00</div>
-      </div>
-
+        <div class="plyr__controls_tools__c">
+        
+        <div class="plyr__timers_c">
+        <div class="plyr__time plyr__time--current" aria-label="Current time">00:00</div>
+        <div> &nbsp/&nbsp</div>
+        <div class="plyr__time plyr__time--duration" aria-label="Duration">00:00</div>
+        </div>
+        
         <div>
         <button type="button" class="plyr__control" data-plyr="rewind">
         <svg role="presentation"><use xlink:href="#plyr-rewind"></use></svg>
@@ -99,8 +98,8 @@ export default function VideoPlayer({ src }) {
         <span class="label--not-pressed plyr__tooltip" role="tooltip">Enter fullscreen</span>
         </button>
         </div>
-  </div>
-  `;
+        </div>
+        `;
 
       const controlsDefault = [
         "play-large",
@@ -140,8 +139,9 @@ export default function VideoPlayer({ src }) {
       };
     }
 
+    hls.loadSource(src);
     hls.attachMedia(videoRef.current);
-    player = new Plyr(videoRef.current);
+    new Plyr(videoRef.current);
   }, [src, videoRef]);
 
   useEffect(() => {
