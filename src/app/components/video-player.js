@@ -100,7 +100,7 @@ export default function VideoPlayer({ src }) {
         </button>
         </div>
         </div>
-        `;
+    `;
 
     const controlsDefault = [
       "play-large",
@@ -123,6 +123,7 @@ export default function VideoPlayer({ src }) {
       debug: false,
       controls: controlsMobile,
       settings: ["quality", "speed"],
+      muted: false,
       quality: {
         forced: true,
         default: 720,
