@@ -1,9 +1,7 @@
 "use client";
 
-import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import VideoPlayer from "../../components/video-player";
-import Link from "next/link";
 import Modal from "react-modal";
 
 export default function Home() {
@@ -50,15 +48,13 @@ export default function Home() {
 
   return (
     <>
-      <VideoPlayer src={videoUrl} />
       {/* <Head>
         <title>Next.js & HLS.js</title>
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
 
-      <div className="grid">
-        {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
-      </div>
+      {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
+      <div className="grid"></div>
       {/* <main>
          <div className="grid">
           <Link
