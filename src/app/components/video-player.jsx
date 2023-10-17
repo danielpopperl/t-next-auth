@@ -157,13 +157,13 @@ export default function VideoPlayer({ src }) {
   }, [videoRef]);
 
   return (
-    <>
-      <video playsInline id="video-c" controls ref={videoRef} />
+    <div>
+      <video playsInline id="video" controls ref={videoRef} />
       <style jsx>{`
         video {
           max-width: 100%;
         }
       `}</style>
-    </>
+    </div>
   );
 }
