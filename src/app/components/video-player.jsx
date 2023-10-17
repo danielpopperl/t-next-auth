@@ -107,7 +107,7 @@ export default function VideoPlayer({ src }) {
 
     const defaultOptions = {
       debug: false,
-      controls: controlsMobile,
+      controls: controlsDefault,
       settings: ["quality", "speed"],
       quality: {
         forced: true,
