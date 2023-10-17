@@ -9,7 +9,7 @@ export default function VideoPlayer({ src }) {
   let player = undefined;
   let abc = [];
 
-  let hls = new Hls({ maxBufferSize: 5 * 1000 * 1000 });
+  let hls = new Hls();
 
   function updateQUality(e) {
     hls.levels.forEach((element, index) => {
@@ -139,9 +139,10 @@ export default function VideoPlayer({ src }) {
         },
       };
     }
+
     hls.attachMedia(videoRef.current);
     player = new Plyr(videoRef.current);
-  }, [src, videoRef, setHlsLoad]);
+  }, [src, videoRef]);
 
   useEffect(() => {
     const a = setInterval(() => {
