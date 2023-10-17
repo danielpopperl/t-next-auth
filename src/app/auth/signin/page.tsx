@@ -10,10 +10,10 @@ export default function Home() {
   const [videoUrl, setVideoUrl] = useState("");
 
   useEffect(() => {
+    setVideoUrl(newvideoUrl);
     console.log("comming");
     // new Maxtap.Component({ content_id: "spiderman-4" }).init();
     setIsWatchNow(true);
-    setVideoUrl(newvideoUrl);
   });
 
   let newvideoUrl =
@@ -53,7 +53,7 @@ export default function Home() {
       </Head> */}
 
       <div className="grid">
-        {newvideoUrl !== "" && <VideoPlayer src={newvideoUrl} />}
+        {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
       </div>
       {/* <main>
          <div className="grid">
