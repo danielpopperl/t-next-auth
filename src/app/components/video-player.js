@@ -119,7 +119,7 @@ export default function VideoPlayer({ src }) {
     if (hlsLoad) {
       defaultOptions = {
         debug: false,
-        controls: controlsMobile,
+        controls: controlsDefault,
         settings: ["quality", "speed"],
         muted: false,
         quality: {
