@@ -6,12 +6,11 @@ import Plyr from "plyr";
 
 export default function VideoPlayer({ src }) {
   const videoRef = useRef(null);
-  const [hlsLoad, setHlsLoad] = useState(false);
-
   const player = useRef(null);
-  let abc = [];
 
   let hls = new Hls();
+  let abc = [];
+  let defaultOptions = null;
 
   const controlsMobile = `
         <div class="plyr__controls_c">
@@ -66,7 +65,7 @@ export default function VideoPlayer({ src }) {
         </button>
         </div>
         </div>
-    `;
+  `;
 
   const controlsDefault = [
     "play-large",
@@ -85,10 +84,7 @@ export default function VideoPlayer({ src }) {
     "fullscreen",
   ];
 
-  let defaultOptions = null;
-
   function updateQUality(e) {
-    console.log(abc);
     hls.levels.forEach((element, index) => {
       if (element.height == e) {
         hls.currentLevel = index;
@@ -100,7 +96,6 @@ export default function VideoPlayer({ src }) {
     const video = videoRef.current;
 
     if (!video) return;
-    hls.loadSource(src);
 
     if (video.canPlayType("application/vnd.apple.mpegurl")) {
       // This will run in safari, where HLS is supported natively
@@ -108,51 +103,54 @@ export default function VideoPlayer({ src }) {
     } else if (Hls.isSupported()) {
       // This will run in all other modern browsers
 
+      defaultOptions = {
+        debug: false,
+        controls: controlsDefault,
+        settings: ["quality", "speed"],
+        muted: false,
+        quality: {
+          forced: true,
+          default: 720,
+          options: abc.reverse(),
+          onChange: (e) => updateQUality(e),
+        },
+        speed: {
+          selected: 1,
+          options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+        },
+        previewThumbnails: {
+          enabled: true,
+          src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
+        },
+      };
+
+      // video.controls = true;
+
+      hls.loadSource(src);
+
       hls.once(Hls.Events.LEVEL_LOADED, function () {
         if (hls.levels.length > 1 && abc.length < 1) {
           hls.levels.forEach((element, index) => {
             abc.push(element.height);
           });
+
+          abc = abc.reverse();
+
+          hls.attachMedia(video);
+          player.current = new Plyr(video, defaultOptions);
         }
 
-        defaultOptions = {
-          debug: false,
-          controls: controlsDefault,
-          settings: ["quality", "speed"],
-          muted: false,
-          quality: {
-            forced: true,
-            default: 720,
-            options: abc,
-            onChange: (e) => updateQUality(e),
-          },
-          speed: {
-            selected: 1,
-            options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-          },
-          previewThumbnails: {
-            enabled: true,
-            src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
-          },
-        };
+        setHlsLoad(true);
       });
-
-      // video.controls = true;
     } else {
       console.error(
         "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
       );
     }
-
-    hls.attachMedia(video);
-
-    console.log(abc);
-
-    player.current = new Plyr(video, defaultOptions);
   }, [src, videoRef]);
 
   useEffect(() => {
-    if (hlsLoad) {
+    if (abc.length) {
       console.log(12);
     }
     //   const a = setInterval(() => {
@@ -164,7 +162,7 @@ export default function VideoPlayer({ src }) {
     //   }, 2000);
 
     //   return () => clearInterval(a);
-  }, [hlsLoad, player]);
+  }, [abc]);
 
   return (
     <>
