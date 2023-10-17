@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import VideoPlayer from "../../components/video-player";
+import VideoPlayer2 from "../../components/video";
 import Modal from "react-modal";
 
 export default function Home() {
@@ -53,7 +53,7 @@ export default function Home() {
       </Head> */}
 
       <div className="grid">
-        {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
+        {videoUrl !== "" && <VideoPlayer2 src={videoUrl} />}
       </div>
       {/* <main>
          <div className="grid">
