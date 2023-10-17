@@ -52,8 +52,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
 
-      {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
-      <div className="grid"></div>
+      <div className="grid">
+        {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
+      </div>
       {/* <main>
          <div className="grid">
           <Link
