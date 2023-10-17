@@ -137,9 +137,9 @@ export default function VideoPlayer({ src }) {
     } else if (Hls.isSupported()) {
       // This will run in all other modern browsers
       hls.loadSource(src);
-      player = new Plyr(videoRef.current);
+      player = new Plyr(video);
 
-      hls.attachMedia(videoRef.current);
+      hls.attachMedia(video);
     } else {
       return <div>not</div>;
       console.error(
