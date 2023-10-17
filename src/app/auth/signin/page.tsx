@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import VideoPlayer from "../../components/video-player";
 import Link from "next/link";
 import Modal from "react-modal";
-import * as Maxtap from "maxtap_plugin";
+
 export default function Home() {
   const [isModal, setIsOpen] = useState(false);
   const [isWatchNow, setIsWatchNow] = useState(false);
@@ -14,8 +14,11 @@ export default function Home() {
   useEffect(() => {
     console.log("comming");
     // new Maxtap.Component({ content_id: "spiderman-4" }).init();
+    setIsWatchNow(true);
+    setVideoUrl(newvideoUrl);
   });
 
+  // "https://stream.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw.m3u8";
   let newvideoUrl =
     "https://vz-0480b10f-62f.b-cdn.net/3692e87b-e322-4bb5-bb8a-fb93f72523c8/playlist.m3u8";
 
@@ -33,8 +36,6 @@ export default function Home() {
 
   const playVideo = (type: any) => {
     if (type === "trailer") {
-      setIsWatchNow(true);
-      setVideoUrl(newvideoUrl);
     } else if (type === "teaser") {
       setIsWatchNow(true);
       setVideoUrl(newvideoUrl);
@@ -48,7 +49,7 @@ export default function Home() {
   };
 
   return (
-    <div className="container">
+    <div className="">
       <Head>
         <title>Next.js & HLS.js</title>
         <link rel="icon" href="/favicon.ico" />
@@ -56,6 +57,9 @@ export default function Home() {
 
       <main>
         <div className="grid">
+          {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
+        </div>
+        {/* <div className="grid">
           <Link
             href="/"
             className="btn btn-watchnow btn-booknow watchnow mr-3"
@@ -74,7 +78,6 @@ export default function Home() {
           onRequestClose={closeVideoModal}
           contentLabel="Video Modal"
         >
-          {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
           <div className="text-center mt-4">
             <button
               onClick={() => closeVideoModal()}
@@ -83,10 +86,10 @@ export default function Home() {
               Close
             </button>
           </div>
-        </Modal>
+        </Modal> */}
       </main>
 
-      <style jsx>{`
+      {/* <style jsx>{`
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;
@@ -210,7 +213,7 @@ export default function Home() {
         * {
           box-sizing: border-box;
         }
-      `}</style>
+      `}</style> */}
     </div>
   );
 }

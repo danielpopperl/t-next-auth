@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --plyr-color-main: #d1b61a;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,3 +26,58 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.plyr__controls_c {
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(#0000, #000000bf);
+  left: 0;
+  right: 0;
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+  z-index: 3;
+}
+
+.plyr__controls_tools__c {
+  margin-right: 10px;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.plyr__timers_c {
+  align-items: center;
+  display: flex;
+}
+
+/* This is purely for the demo */
+/* .container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.plyr {
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+.title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+  padding: 20px;
+}
+.button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #fff;
+  padding: 20px;
+}
+.plyr--hide-controls .title {
+  opacity: 0;
+  pointer-events: none;
+}
+.plyr--hide-controls .button {
+  opacity: 0;
+  pointer-events: none;
+} */
