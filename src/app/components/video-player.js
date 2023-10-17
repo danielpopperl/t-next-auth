@@ -1,53 +1,19 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import Plyr from "plyr";
 
 export default function VideoPlayer({ src }) {
   const videoRef = useRef(null);
-  const [hlsLoad, setHlsLoad] = useState(null);
+  const [hlsLoad, setHlsLoad] = useState(false);
 
-  let player = undefined;
+  const player = useRef(null);
   let abc = [];
 
   let hls = new Hls();
 
-  function updateQUality(e) {
-    hls.levels.forEach((element, index) => {
-      if (element.height == e) {
-        hls.currentLevel = index;
-      }
-    });
-  }
-
-  useEffect(() => {
-    const video = videoRef.current;
-
-    if (!video) return;
-
-    if (video.canPlayType("application/vnd.apple.mpegurl")) {
-      // This will run in safari, where HLS is supported natively
-      video.src = src;
-    } else if (Hls.isSupported()) {
-      // This will run in all other modern browsers
-
-      hls.once(Hls.Events.LEVEL_LOADED, function () {
-        if (hls.levels.length > 1) {
-          hls.levels.forEach((element, index) => {
-            abc.push(element.height);
-          });
-
-          setHlsLoad(abc.reverse());
-        }
-
-        videoRef.current.controls = true;
-      });
-    } else {
-      console.error(
-        "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
-      );
-    }
-
-    const controlsMobile = `
+  const controlsMobile = `
         <div class="plyr__controls_c">
         
         <div>
@@ -102,60 +68,101 @@ export default function VideoPlayer({ src }) {
         </div>
     `;
 
-    const controlsDefault = [
-      "play-large",
-      "rewind",
-      "play",
-      "fast-forward",
-      "progress",
-      "restart",
-      "current-time",
-      "mute",
-      "volume",
-      "captions",
-      "settings",
-      "pip",
-      "airplay",
-      "fullscreen",
-    ];
+  const controlsDefault = [
+    "play-large",
+    "rewind",
+    "play",
+    "fast-forward",
+    "progress",
+    "restart",
+    "current-time",
+    "mute",
+    "volume",
+    "captions",
+    "settings",
+    "pip",
+    "airplay",
+    "fullscreen",
+  ];
 
-    const defaultOptions = {
-      debug: false,
-      controls: controlsMobile,
-      settings: ["quality", "speed"],
-      muted: false,
-      quality: {
-        forced: true,
-        default: 720,
-        options: abc,
-        onChange: (e) => updateQUality(e),
-      },
-      speed: {
-        selected: 1,
-        options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-      },
-      previewThumbnails: {
-        enabled: true,
-        src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
-      },
-    };
+  let defaultOptions = null;
 
+  function updateQUality(e) {
+    console.log(abc);
+    hls.levels.forEach((element, index) => {
+      if (element.height == e) {
+        hls.currentLevel = index;
+      }
+    });
+  }
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) return;
     hls.loadSource(src);
-    hls.attachMedia(videoRef.current);
 
-    player = new Plyr(videoRef.current, defaultOptions);
+    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      // This will run in safari, where HLS is supported natively
+      video.src = src;
+    } else if (Hls.isSupported()) {
+      // This will run in all other modern browsers
+
+      hls.once(Hls.Events.LEVEL_LOADED, function () {
+        if (hls.levels.length > 1 && abc.length < 1) {
+          hls.levels.forEach((element, index) => {
+            abc.push(element.height);
+          });
+
+          defaultOptions = {
+            debug: false,
+            controls: controlsDefault,
+            settings: ["quality", "speed"],
+            muted: false,
+            quality: {
+              forced: true,
+              default: 720,
+              options: abc,
+              onChange: (e) => updateQUality(e),
+            },
+            speed: {
+              selected: 1,
+              options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+            },
+            previewThumbnails: {
+              enabled: true,
+              src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
+            },
+          };
+        }
+        updateQUality();
+      });
+
+      // video.controls = true;
+    } else {
+      console.error(
+        "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+      );
+    }
+
+    hls.attachMedia(video);
+    player.current = new Plyr(video, defaultOptions);
   }, [src, videoRef]);
 
   useEffect(() => {
-    const a = setInterval(() => {
-      if (!player.paused) {
-        console.log(videoRef.current.currentTime);
-        player.paused;
-      }
-    }, 2000);
+    if (hlsLoad) {
+      console.log(12);
+    }
+    //   const a = setInterval(() => {
+    //     if (!player.current.paused) {
+    //       player.current.pause();
+    //       console.log(player.current.stopped);
+    //       console.log(player.current.currentTime);
+    //     }
+    //   }, 2000);
 
-    return () => clearInterval(a);
-  }, [videoRef]);
+    //   return () => clearInterval(a);
+  }, [hlsLoad, player]);
 
   return (
     <>
