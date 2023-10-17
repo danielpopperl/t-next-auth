@@ -98,15 +98,14 @@ export default function VideoPlayer({ src }) {
 
     // if (!video) return;
 
-    console.log(12456);
     if (video && video.canPlayType("application/vnd.apple.mpegurl")) {
       // This will run in safari, where HLS is supported natively
       video.src = src;
     }
 
     if (Hls.isSupported()) {
-      setHlsLoad(true);
       // This will run in all other modern browsers
+      setHlsLoad(true);
     }
 
     if (video && !Hls.isSupported()) {
@@ -120,18 +119,18 @@ export default function VideoPlayer({ src }) {
     if (hlsLoad) {
       defaultOptions = {
         debug: false,
-        controls: controlsDefault,
+        controls: controlsMobile,
         settings: ["quality", "speed"],
         muted: false,
         quality: {
           forced: true,
-          default: 720,
+          default: -1,
           options: abc.reverse(),
           onChange: (e) => updateQUality(e),
         },
         speed: {
           selected: 1,
-          options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+          options: [0.5, 1, 1.25, 1.5, 2],
         },
         previewThumbnails: {
           enabled: true,
@@ -139,7 +138,7 @@ export default function VideoPlayer({ src }) {
         },
       };
 
-      video.controls = true;
+      videoRef.controls = true;
 
       hls.loadSource(src);
 
@@ -156,6 +155,7 @@ export default function VideoPlayer({ src }) {
         }
       });
     }
+
     //   const a = setInterval(() => {
     //     if (!player.current.paused) {
     //       player.current.pause();
