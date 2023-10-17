@@ -133,11 +133,10 @@ export default function VideoPlayer({ src }) {
           });
 
           abc = abc.reverse();
-
-          hls.loadSource(src);
-          hls.attachMedia(video);
-          player.current = new Plyr(video, defaultOptions);
         }
+        hls.loadSource(src);
+        hls.attachMedia(video);
+        player.current = new Plyr(video, defaultOptions);
 
         setHlsLoad(true);
       });
