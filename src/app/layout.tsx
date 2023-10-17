@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import AuthProvider from "./context/AuthProvider";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,7 @@ export default function RootLayout({
     <AuthProvider>
       <html lang="en">
         <body className={inter.className}>
-          <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+          <Script src="https://cdn.plyr.io/3.7.8/plyr.js" />
           {children}
         </body>
       </html>
