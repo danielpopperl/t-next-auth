@@ -141,13 +141,14 @@ export default function VideoPlayer({ src }) {
 
     hls.loadSource(src);
     hls.attachMedia(videoRef.current);
-    new Plyr(videoRef.current);
+    player = new Plyr(videoRef.current);
   }, [src, videoRef]);
 
   useEffect(() => {
     const a = setInterval(() => {
       if (!player.paused) {
         console.log(videoRef.current.currentTime);
+        player.paused;
       }
     }, 2000);
 
