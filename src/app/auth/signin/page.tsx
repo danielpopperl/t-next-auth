@@ -49,17 +49,17 @@ export default function Home() {
   };
 
   return (
-    <div className="">
-      <Head>
+    <>
+      {/* <Head>
         <title>Next.js & HLS.js</title>
         <link rel="icon" href="/favicon.ico" />
-      </Head>
+      </Head> */}
 
-      <main>
-        <div className="grid">
-          {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
-        </div>
-        {/* <div className="grid">
+      <div className="grid">
+        {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
+      </div>
+      {/* <main>
+         <div className="grid">
           <Link
             href="/"
             className="btn btn-watchnow btn-booknow watchnow mr-3"
@@ -86,8 +86,9 @@ export default function Home() {
               Close
             </button>
           </div>
-        </Modal> */}
+        </Modal> 
       </main>
+        */}
 
       {/* <style jsx>{`
         .container {
@@ -214,6 +215,6 @@ export default function Home() {
           box-sizing: border-box;
         }
       `}</style> */}
-    </div>
+    </>
   );
 }
