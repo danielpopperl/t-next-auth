@@ -53,7 +53,7 @@ export default function Home() {
       </Head> */}
 
       <div className="grid">
-        {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
+        {newvideoUrl !== "" && <VideoPlayer src={newvideoUrl} />}
       </div>
       {/* <main>
          <div className="grid">
