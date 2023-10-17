@@ -123,11 +123,7 @@ export default function VideoPlayer({ src }) {
 
     videoRef.current.controls = true;
 
-    hls.loadSource(src);
-
     player = new Plyr(videoRef.current);
-
-    hls.attachMedia(videoRef.current);
   });
 
   useEffect(() => {
@@ -140,6 +136,9 @@ export default function VideoPlayer({ src }) {
       video.src = src;
     } else if (Hls.isSupported()) {
       // This will run in all other modern browsers
+
+      hls.loadSource(src);
+      hls.attachMedia(videoRef.current);
     } else {
       console.error(
         "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
