@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import VideoPlayer from "../../components/video-player";
 import Modal from "react-modal";
+import Link from "next/link";
 
 export default function Home() {
   const [isModal, setIsOpen] = useState(false);
@@ -53,10 +54,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
 
-      {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
-      <div className="grid"></div>
-      {/* <main>
-         <div className="grid">
+      <main>
+        <div className="grid">
           <Link
             href="/"
             className="btn btn-watchnow btn-booknow watchnow mr-3"
@@ -76,6 +75,9 @@ export default function Home() {
           contentLabel="Video Modal"
         >
           <div className="text-center mt-4">
+            <div className="grid">
+              {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
+            </div>
             <button
               onClick={() => closeVideoModal()}
               className="btn btn-danger"
@@ -83,11 +85,10 @@ export default function Home() {
               Close
             </button>
           </div>
-        </Modal> 
+        </Modal>
       </main>
-        */}
 
-      {/* <style jsx>{`
+      <style jsx>{`
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;
@@ -211,7 +212,7 @@ export default function Home() {
         * {
           box-sizing: border-box;
         }
-      `}</style> */}
+      `}</style>
     </>
   );
 }
