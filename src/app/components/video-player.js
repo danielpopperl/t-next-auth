@@ -140,7 +140,7 @@ export default function VideoPlayer({ src }) {
       };
     }
     hls.attachMedia(videoRef.current);
-    player = new Plyr(videoRef.current, defaultOptions);
+    player = new Plyr(videoRef.current);
   }, [src, videoRef, setHlsLoad]);
 
   useEffect(() => {
