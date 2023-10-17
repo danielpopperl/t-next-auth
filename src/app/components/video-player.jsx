@@ -122,6 +122,10 @@ export default function VideoPlayer({ src }) {
     };
 
     videoRef.current.controls = true;
+
+    player = new Plyr(videoRef.current);
+
+    hls.attachMedia(videoRef.current);
   });
 
   useEffect(() => {
@@ -135,9 +139,6 @@ export default function VideoPlayer({ src }) {
     } else if (Hls.isSupported()) {
       // This will run in all other modern browsers
       hls.loadSource(src);
-      player = new Plyr(video);
-
-      hls.attachMedia(video);
     } else {
       console.error(
         "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
@@ -157,7 +158,7 @@ export default function VideoPlayer({ src }) {
 
   return (
     <>
-      <video playsInline id="video" controls ref={videoRef} />
+      <video id="video" playsInline controls ref={videoRef} />
       <style jsx>{`
         video {
           max-width: 100%;
