@@ -113,29 +113,28 @@ export default function VideoPlayer({ src }) {
           hls.levels.forEach((element, index) => {
             abc.push(element.height);
           });
-
-          defaultOptions = {
-            debug: false,
-            controls: controlsDefault,
-            settings: ["quality", "speed"],
-            muted: false,
-            quality: {
-              forced: true,
-              default: 720,
-              options: abc,
-              onChange: (e) => updateQUality(e),
-            },
-            speed: {
-              selected: 1,
-              options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-            },
-            previewThumbnails: {
-              enabled: true,
-              src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
-            },
-          };
         }
-        updateQUality();
+
+        defaultOptions = {
+          debug: false,
+          controls: controlsDefault,
+          settings: ["quality", "speed"],
+          muted: false,
+          quality: {
+            forced: true,
+            default: 720,
+            options: abc,
+            onChange: (e) => updateQUality(e),
+          },
+          speed: {
+            selected: 1,
+            options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+          },
+          previewThumbnails: {
+            enabled: true,
+            src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
+          },
+        };
       });
 
       // video.controls = true;
@@ -146,6 +145,9 @@ export default function VideoPlayer({ src }) {
     }
 
     hls.attachMedia(video);
+
+    console.log(abc);
+
     player.current = new Plyr(video, defaultOptions);
   }, [src, videoRef]);
 
