@@ -161,7 +161,13 @@ export default function VideoPlayer({ src }) {
   return (
     <>
       <div className="h-60">
-        <video id="video-c" className="h-60" ref={videoRef} />
+        <video
+          crossorigin
+          playsInline
+          id="video-c"
+          className="h-60"
+          ref={videoRef}
+        />
         {/* <style jsx>{`
         video {
           max-width: 100%;
