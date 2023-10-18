@@ -9,6 +9,7 @@ export default function VideoPlayer({ src }) {
   const videoRef = useRef(null);
   const player = useRef(null);
   const [hlsLoad, setHlsLoad] = useState(false);
+  const [playerReady, setPlayerReady] = useState(false);
 
   let hls = new Hls();
   let qualityHls = [];
@@ -118,10 +119,11 @@ export default function VideoPlayer({ src }) {
 
   useEffect(() => {
     const video = videoRef.current;
+    let player2 = player.current;
 
     if (hlsLoad) {
       defaultOptions = {
-        debug: false,
+        debug: true,
         controls: controlsMobile,
         settings: ["quality", "speed"],
         muted: false,
@@ -142,7 +144,7 @@ export default function VideoPlayer({ src }) {
         },
       };
 
-      videoRef.controls = true;
+      // videoRef.controls = true;
 
       hls.loadSource(src);
 
@@ -155,7 +157,9 @@ export default function VideoPlayer({ src }) {
           qualityHls = qualityHls.reverse();
 
           hls.attachMedia(video);
-          player.current = new Plyr(video, defaultOptions);
+
+          player2 = new Plyr(video, defaultOptions);
+          setPlayerReady(true);
         }
       });
     }
@@ -169,12 +173,24 @@ export default function VideoPlayer({ src }) {
     //   }, 2000);
 
     //   return () => clearInterval(a);
-  }, [hlsLoad]);
+  }, [hlsLoad, playerReady]);
+
+  useEffect(() => {
+    let player2 = player.current;
+
+    if (playerReady && player2 != null) {
+      console.log(12);
+      player2.on("ready", (event) => {});
+    }
+  }, [playerReady, player]);
 
   return (
     <>
       <div>
-        {hlsLoad && <video id="video12" playsInline controls ref={videoRef} />}
+        {playerReady == false && <div> oi </div>}
+        {playerReady == true && (
+          <video id="video" playsInline controls ref={videoRef} />
+        )}
       </div>
 
       <style jsx>{`
