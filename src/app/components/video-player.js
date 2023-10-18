@@ -9,7 +9,6 @@ export default function VideoPlayer({ src }) {
   const [playerReady, setPlayerReady] = useState(false);
 
   let hls = new Hls();
-  // let player = new Plyr();
   let qualityHls = [];
   let defaultOptions = null;
 
@@ -91,7 +90,7 @@ export default function VideoPlayer({ src }) {
     video.src = src;
   }
 
-  if (!video && Hls.isSupported()) {
+  if (!video && !playerPlay && Hls.isSupported()) {
     hls.loadSource(src);
 
     hls.once(Hls.Events.LEVEL_LOADED, function () {
@@ -130,17 +129,10 @@ export default function VideoPlayer({ src }) {
 
         player.current = new Plyr(videoRef.current, defaultOptions);
 
-        player.current.once("canplaythrough", (event) => {
-          setPlayerReady(true);
-          console.log(8);
-        });
-
         // if (!playerReady) {
         // }
       }
     });
-
-    console.log(playerReady);
   }
 
   if (video && !Hls.isSupported()) {
@@ -193,8 +185,14 @@ export default function VideoPlayer({ src }) {
   return (
     <>
       <div>
-        {playerPlay == true ? (
-          <video id="video" playsInline controls ref={videoRef} />
+        {playerPlay ? (
+          <video
+            id="video"
+            playsInline
+            controls
+            ref={videoRef}
+            data-poster="https://image.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA/thumbnail.png?width=214&height=121&time=2"
+          />
         ) : (
           <div>oi</div>
         )}
