@@ -28,13 +28,20 @@ body {
 }
 
 .plyr__controls_c {
-  position: absolute;
-  bottom: 0;
-  background: linear-gradient(#0000, #000000bf);
-  left: 0;
-  right: 0;
-  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-  z-index: 3;
+  display: block !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  background: linear-gradient(#0000, #000000bf) !important;
+  left: 0 !important;
+  right: 0 !important;
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out !important;
+  z-index: 3 !important;
+}
+
+.plyr--video.plyr--hide-controls .plyr__controls_c {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(100%);
 }
 
 .plyr__controls_tools__c {

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import Plyr from "plyr";
+import "plyr/dist/plyr.css";
 
 export default function VideoPlayer({ src }) {
   const videoRef = useRef(null);
@@ -10,62 +11,62 @@ export default function VideoPlayer({ src }) {
   const [hlsLoad, setHlsLoad] = useState(false);
 
   let hls = new Hls();
-  let abc = [];
+  let qualityHls = [];
   let defaultOptions = null;
 
   const controlsMobile = `
-        <div class="plyr__controls_c">
-        
-        <div>
-        <div class="plyr__progress">
+    <div class="plyr__controls plyr__controls_c">
+    
+    <div>
+      <div class="plyr__progress">
         <input data-plyr="seek" type="range" min="0" max="100" step="0.01" value="0" aria-label="Seek">
         <progress class="plyr__progress__buffer" min="0" max="100" value="0">% buffered</progress>
         <span role="tooltip" class="plyr__tooltip">00:00</span>
-        </div>
-        </div>
-      
-        <div class="plyr__controls_tools__c">
-        
-        <div class="plyr__timers_c">
+      </div>
+    </div>
+  
+    <div class="plyr__controls_tools__c">
+    
+      <div class="plyr__timers_c">
         <div class="plyr__time plyr__time--current" aria-label="Current time">00:00</div>
         <div> &nbsp/&nbsp</div>
         <div class="plyr__time plyr__time--duration" aria-label="Duration">00:00</div>
-        </div>
-        
-        <div>
+      </div>
+      
+      <div>
         <button type="button" class="plyr__control" data-plyr="rewind">
-        <svg role="presentation"><use xlink:href="#plyr-rewind"></use></svg>
-        <span class="plyr__tooltip" role="tooltip">Rewind {seektime} secs</span>
+          <svg role="presentation"><use xlink:href="#plyr-rewind"></use></svg>
+          <span class="plyr__tooltip" role="tooltip">Rewind {seektime} secs</span>
         </button>
         
         <button type="button" class="plyr__control" aria-label="Play, {title}" data-plyr="play">
-        <svg class="icon--pressed" role="presentation"><use xlink:href="#plyr-pause"></use></svg>
-        <svg class="icon--not-pressed" role="presentation"><use xlink:href="#plyr-play"></use></svg>
-        <span class="label--pressed plyr__tooltip" role="tooltip">Pause</span>
-        <span class="label--not-pressed plyr__tooltip" role="tooltip">Play</span>
+          <svg class="icon--pressed" role="presentation"><use xlink:href="#plyr-pause"></use></svg>
+          <svg class="icon--not-pressed" role="presentation"><use xlink:href="#plyr-play"></use></svg>
+          <span class="label--pressed plyr__tooltip" role="tooltip">Pause</span>
+          <span class="label--not-pressed plyr__tooltip" role="tooltip">Play</span>
         </button>
         
         <button type="button" class="plyr__control" data-plyr="fast-forward">
-        <svg role="presentation"><use xlink:href="#plyr-fast-forward"></use></svg>
-        <span class="plyr__tooltip" role="tooltip">Forward {seektime} secs</span>
+          <svg role="presentation"><use xlink:href="#plyr-fast-forward"></use></svg>
+          <span class="plyr__tooltip" role="tooltip">Forward {seektime} secs</span>
         </button>
         
         <button type="button" class="plyr__control" data-plyr="captions">
-        <svg class="icon--pressed" role="presentation"><use xlink:href="#plyr-captions-on"></use></svg>
-        <svg class="icon--not-pressed" role="presentation"><use xlink:href="#plyr-captions-off"></use></svg>
-        <span class="label--pressed plyr__tooltip" role="tooltip">Disable captions</span>
-        <span class="label--not-pressed plyr__tooltip" role="tooltip">Enable captions</span>
+          <svg class="icon--pressed" role="presentation"><use xlink:href="#plyr-captions-on"></use></svg>
+          <svg class="icon--not-pressed" role="presentation"><use xlink:href="#plyr-captions-off"></use></svg>
+          <span class="label--pressed plyr__tooltip" role="tooltip">Disable captions</span>
+          <span class="label--not-pressed plyr__tooltip" role="tooltip">Enable captions</span>
         </button>
-        </div>
-        
-        <button type="button" class="plyr__control" data-plyr="fullscreen">
+      </div>
+    
+      <button type="button" class="plyr__control" data-plyr="fullscreen">
         <svg class="icon--pressed" role="presentation"><use xlink:href="#plyr-exit-fullscreen"></use></svg>
         <svg class="icon--not-pressed" role="presentation"><use xlink:href="#plyr-enter-fullscreen"></use></svg>
         <span class="label--pressed plyr__tooltip" role="tooltip">Exit fullscreen</span>
         <span class="label--not-pressed plyr__tooltip" role="tooltip">Enter fullscreen</span>
-        </button>
-        </div>
-        </div>
+      </button>
+      </div>
+    </div>
   `;
 
   const controlsDefault = [
@@ -116,16 +117,19 @@ export default function VideoPlayer({ src }) {
   }, [src, videoRef]);
 
   useEffect(() => {
+    const video = videoRef.current;
+
     if (hlsLoad) {
       defaultOptions = {
         debug: false,
-        controls: controlsDefault,
+        controls: controlsMobile,
         settings: ["quality", "speed"],
         muted: false,
+        hideControls: true,
         quality: {
           forced: true,
           default: -1,
-          options: abc.reverse(),
+          options: qualityHls.reverse(),
           onChange: (e) => updateQUality(e),
         },
         speed: {
@@ -143,12 +147,12 @@ export default function VideoPlayer({ src }) {
       hls.loadSource(src);
 
       hls.once(Hls.Events.LEVEL_LOADED, function () {
-        if (hls.levels.length > 1 && abc.length < 1) {
+        if (hls.levels.length > 1 && qualityHls.length < 1) {
           hls.levels.forEach((element, index) => {
-            abc.push(element.height);
+            qualityHls.push(element.height);
           });
 
-          abc = abc.reverse();
+          qualityHls = qualityHls.reverse();
 
           hls.attachMedia(video);
           player.current = new Plyr(video, defaultOptions);
@@ -170,7 +174,7 @@ export default function VideoPlayer({ src }) {
   return (
     <>
       <div>
-        {hlsLoad && <video id="video" playsInline controls ref={videoRef} />}
+        {hlsLoad && <video id="video12" playsInline controls ref={videoRef} />}
       </div>
 
       <style jsx>{`
