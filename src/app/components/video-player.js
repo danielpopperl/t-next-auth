@@ -128,6 +128,7 @@ export default function VideoPlayer({ src }) {
         };
 
         player.current = new Plyr(videoRef.current, defaultOptions);
+        setPlayerReady(true);
       }
     });
   }
@@ -168,19 +169,15 @@ export default function VideoPlayer({ src }) {
   // }, [hlsLoad, playerReady]);
 
   useEffect(() => {
-    console.log(playerReady);
-
-    if (!playerPlay) setPlayerPlay(true);
-    //   let player2 = player.current;
-
-    //   if (playerReady && player2 != null) {
-    //     player2.on("ready", (event) => {});
-    //     console.log(12);
-    //   }
-  }, [playerReady]);
+    if (!playerPlay && playerReady) {
+      console.log(playerReady);
+      setPlayerPlay(true);
+    }
+  }, [playerReady, playerPlay]);
 
   return (
     <>
+      <div>video</div>
       <div>
         {playerPlay ? (
           <video
