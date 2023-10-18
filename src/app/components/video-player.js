@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import Plyr from "plyr";
+import { eventNames } from "process";
 
 export default function VideoPlayer({ src }) {
   const videoRef = useRef(null);
   const player = useRef(null);
   const [playerPlay, setPlayerPlay] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
+
+  const [test, setTest] = useState(false);
 
   let hls = new Hls();
   let qualityHls = [];
@@ -129,13 +132,11 @@ export default function VideoPlayer({ src }) {
 
         player.current = new Plyr(videoRef.current, defaultOptions);
 
-        setPlayerReady(true);
+        player.current.once("progress", (event) => {
+          setTest(true);
+        });
 
-        readyPlay();
-        // player.current.once("progress", (event) => {
-        //   console.log(playerReady);
-        //   this.updateQUality();
-        // });
+        setPlayerReady(true);
       }
     });
   }
@@ -158,31 +159,24 @@ export default function VideoPlayer({ src }) {
     if (playerReady && !playerPlay) setPlayerPlay(true);
   }
 
-  // useEffect(() => {
-  //   const video = videoRef.current;
-  //   let player2 = player.current;
+  useEffect(() => {
+    const video = videoRef.current;
+    let player2 = player.current;
 
-  //   if (hlsLoad) {
-  //     // videoRef.controls = true;
+    const a = setInterval(() => {
+      player2.pause();
+      if (!player.current.paused) {
+        console.log(player.current.stopped);
+        console.log(player.current.currentTime);
+      }
+    }, 2000);
 
-  //     hls.loadSource(src);
-  //   }
+    return () => clearInterval(a);
+  }, [playerPlay]);
 
-  //   //   const a = setInterval(() => {
-  //   //     if (!player.current.paused) {
-  //   //       player.current.pause();
-  //   //       console.log(player.current.stopped);
-  //   //       console.log(player.current.currentTime);
-  //   //     }
-  //   //   }, 2000);
-
-  //   //   return () => clearInterval(a);
-  // }, [hlsLoad, playerReady]);
-
-  // if (!playerPlay && playerReady == true) {
-  //   setPlayerPlay(true);
-  // }
-  // useEffect(() => {}, [playerReady]);
+  if (!playerPlay && playerReady) {
+    setPlayerPlay(true);
+  }
 
   return (
     <>
@@ -191,6 +185,7 @@ export default function VideoPlayer({ src }) {
         {playerPlay && playerReady ? (
           <video
             id="video"
+            className={`hidden ${test ? "flex" : ""}`}
             playsInline
             controls
             ref={videoRef}
