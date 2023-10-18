@@ -128,9 +128,6 @@ export default function VideoPlayer({ src }) {
         };
 
         player.current = new Plyr(videoRef.current, defaultOptions);
-
-        // if (!playerReady) {
-        // }
       }
     });
   }
@@ -173,7 +170,7 @@ export default function VideoPlayer({ src }) {
   useEffect(() => {
     console.log(playerReady);
 
-    setPlayerPlay(true);
+    if (!playerPlay) setPlayerPlay(true);
     //   let player2 = player.current;
 
     //   if (playerReady && player2 != null) {
