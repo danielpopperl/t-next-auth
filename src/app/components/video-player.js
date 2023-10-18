@@ -128,7 +128,14 @@ export default function VideoPlayer({ src }) {
         };
 
         player.current = new Plyr(videoRef.current, defaultOptions);
+
         setPlayerReady(true);
+
+        readyPlay();
+        // player.current.once("progress", (event) => {
+        //   console.log(playerReady);
+        //   this.updateQUality();
+        // });
       }
     });
   }
@@ -145,6 +152,10 @@ export default function VideoPlayer({ src }) {
         hls.currentLevel = index;
       }
     });
+  }
+
+  function readyPlay() {
+    if (playerReady && !playerPlay) setPlayerPlay(true);
   }
 
   // useEffect(() => {
@@ -168,18 +179,16 @@ export default function VideoPlayer({ src }) {
   //   //   return () => clearInterval(a);
   // }, [hlsLoad, playerReady]);
 
-  useEffect(() => {
-    if (!playerPlay && playerReady) {
-      console.log(playerReady);
-      setPlayerPlay(true);
-    }
-  }, [playerReady, playerPlay]);
+  // if (!playerPlay && playerReady == true) {
+  //   setPlayerPlay(true);
+  // }
+  // useEffect(() => {}, [playerReady]);
 
   return (
     <>
       <div>video</div>
       <div>
-        {playerPlay ? (
+        {playerPlay && playerReady ? (
           <video
             id="video"
             playsInline
