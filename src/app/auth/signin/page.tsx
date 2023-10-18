@@ -9,10 +9,10 @@ export default function Home() {
   const [isWatchNow, setIsWatchNow] = useState(false);
   const [videoUrl, setVideoUrl] = useState("");
 
-  // useEffect(() => {
-  //   console.log("comming");
-  //   setVideoUrl(newvideoUrl);
-  // });
+  useEffect(() => {
+    console.log("comming");
+    setVideoUrl(newvideoUrl);
+  });
 
   let newvideoUrl =
     "https://stream.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA.m3u8";
@@ -51,7 +51,7 @@ export default function Home() {
       </Head> */}
 
       <div className="grid">
-        {newvideoUrl !== "" && <VideoPlayer2 src={newvideoUrl} />}
+        {videoUrl !== "" && <VideoPlayer2 src={videoUrl} />}
       </div>
       {/* <main>
          <div className="grid">
