@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+"use client";
+
+import { Suspense, useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import Plyr from "plyr";
 import { eventNames } from "process";
@@ -128,12 +130,23 @@ export default function VideoPlayer({ src }) {
           //   enabled: true,
           //   src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
           // },
+          listeners: {
+            play(e) {
+              if (player.current.playing) {
+                // player.current.error();
+                console.log(e);
+              } else {
+              }
+            },
+          },
         };
 
         player.current = new Plyr(videoRef.current, defaultOptions);
 
-        player.current.once("progress", (event) => {
-          setTest(true);
+        player.current.on("progress", (event) => {
+          setTimeout(() => {
+            setTest(true);
+          }, 100);
         });
 
         setPlayerReady(true);
@@ -155,44 +168,38 @@ export default function VideoPlayer({ src }) {
     });
   }
 
-  function readyPlay() {
-    if (playerReady && !playerPlay) setPlayerPlay(true);
+  if (!playerPlay && playerReady) {
+    setTimeout(() => {
+      setPlayerPlay(true);
+    }, 10);
   }
 
   useEffect(() => {
-    const video = videoRef.current;
-    let player2 = player.current;
-
     const a = setInterval(() => {
-      player2.pause();
-      if (!player.current.paused) {
-        console.log(player.current.stopped);
-        console.log(player.current.currentTime);
+      if (player.current.pla) {
+        // player.current.togglePlay();
+        console.log(player.current.play);
       }
     }, 2000);
 
     return () => clearInterval(a);
   }, [playerPlay]);
 
-  if (!playerPlay && playerReady) {
-    setPlayerPlay(true);
-  }
-
   return (
     <>
       <div>video</div>
       <div>
-        {playerPlay && playerReady ? (
-          <video
-            id="video"
-            className={`hidden ${test ? "flex" : ""}`}
-            playsInline
-            controls
-            ref={videoRef}
-            data-poster="https://image.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA/thumbnail.png?width=214&height=121&time=2"
-          />
-        ) : (
-          <div>oi</div>
+        {playerPlay && playerReady && (
+          <Suspense fallback={<p>Loading feed...</p>}>
+            <video
+              id="video"
+              className={`hidden ${test ? "flex" : ""}`}
+              playsInline
+              controls
+              ref={videoRef}
+              // data-poster="https://image.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA/thumbnail.png?width=214&height=121&time=2"
+            />
+          </Suspense>
         )}
       </div>
 
