@@ -36,12 +36,7 @@ body {
   right: 0 !important;
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out !important;
   z-index: 3 !important;
-}
-
-.plyr--video.plyr--hide-controls .plyr__controls_c {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(100%);
+  color: azure;
 }
 
 .plyr__controls_tools__c {
@@ -52,7 +47,14 @@ body {
   justify-content: space-between;
 }
 
+.plyr__controls_tools_main__c {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
 .plyr__timers_c {
+  justify-content: start;
   align-items: center;
   display: flex;
 }

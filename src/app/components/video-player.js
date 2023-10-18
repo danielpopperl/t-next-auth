@@ -18,6 +18,12 @@ export default function VideoPlayer({ src }) {
     <div class="plyr__controls plyr__controls_c">
     
     <div>
+      <div class="plyr__timers_c">
+        <div class="plyr__time plyr__time--current" aria-label="Current time">00:00</div>
+        <div> &nbsp/&nbsp</div>
+        <div class="plyr__time plyr__time--duration" aria-label="Duration">00:00</div>
+      </div>
+    
       <div class="plyr__progress">
         <input data-plyr="seek" type="range" min="0" max="100" step="0.01" value="0" aria-label="Seek">
         <progress class="plyr__progress__buffer" min="0" max="100" value="0">% buffered</progress>
@@ -27,13 +33,7 @@ export default function VideoPlayer({ src }) {
   
     <div class="plyr__controls_tools__c">
     
-      <div class="plyr__timers_c">
-        <div class="plyr__time plyr__time--current" aria-label="Current time">00:00</div>
-        <div> &nbsp/&nbsp</div>
-        <div class="plyr__time plyr__time--duration" aria-label="Duration">00:00</div>
-      </div>
-      
-      <div>
+      <div class="plyr__controls_tools_main__c">
         <button type="button" class="plyr__control" data-plyr="rewind">
           <svg role="presentation"><use xlink:href="#plyr-rewind"></use></svg>
           <span class="plyr__tooltip" role="tooltip">Rewind {seektime} secs</span>
