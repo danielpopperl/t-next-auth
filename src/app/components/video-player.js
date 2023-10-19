@@ -92,7 +92,8 @@ export default function VideoPlayer({ src }) {
     video.src = src;
   }
 
-  if (!video && !playerReady && Hls.isSupported()) {
+  if (!video && Hls.isSupported() && !playerReady) {
+    console.log(hls.loadSource(src));
     hls.loadSource(src);
 
     hls.once(Hls.Events.LEVEL_LOADED, function () {
@@ -138,15 +139,17 @@ export default function VideoPlayer({ src }) {
           // },
         };
 
-        player.current = new Plyr(videoRef.current, defaultOptions);
+        if (!playerReady) {
+          player.current = new Plyr(videoRef.current, defaultOptions);
 
-        setPlayerReady(true);
-
-        player.current.once("canplaythrough", () => {
-          setTest(true);
-        });
+          player.current.once("canplaythrough", (event) => {
+            setTest(true);
+          });
+        }
       }
     });
+
+    setPlayerReady(true);
   }
 
   if (video && !Hls.isSupported()) {
@@ -164,27 +167,27 @@ export default function VideoPlayer({ src }) {
   }
 
   if (!playerPlay && playerReady) {
-    setTimeout(() => {
-      setPlayerPlay(true);
-    }, 10);
+    setPlayerPlay(true);
   }
 
   useEffect(() => {
+    if (!player.current) return;
+
     const a = setInterval(() => {
       if (player.current.playing) {
-        // player.current.togglePlay();
         console.log(player.current.currentTime);
+        // player.current.togglePlay();
       }
     }, 2000);
 
     return () => clearInterval(a);
-  }, [playerPlay]);
+  }, [test]);
 
   return (
     <>
       <div>video</div>
       <div className="text-slate-300">
-        {playerPlay && playerReady && (
+        {playerPlay ? (
           <video
             id="video"
             className={`hidden ${test ? "flex" : ""}`}
@@ -193,6 +196,8 @@ export default function VideoPlayer({ src }) {
             ref={videoRef}
             // data-poster="https://image.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA/thumbnail.png?width=214&height=121&time=2"
           />
+        ) : (
+          <div>oiii</div>
         )}
       </div>
 
