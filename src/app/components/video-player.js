@@ -1,9 +1,6 @@
-"use client";
-
 import { Suspense, useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import Plyr from "plyr";
-import { eventNames } from "process";
 
 export default function VideoPlayer({ src }) {
   const videoRef = useRef(null);
@@ -95,7 +92,7 @@ export default function VideoPlayer({ src }) {
     video.src = src;
   }
 
-  if (!video && !playerPlay && Hls.isSupported()) {
+  if (!video && !playerReady && Hls.isSupported()) {
     hls.loadSource(src);
 
     hls.once(Hls.Events.LEVEL_LOADED, function () {
@@ -130,20 +127,20 @@ export default function VideoPlayer({ src }) {
           //   enabled: true,
           //   src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
           // },
-          listeners: {
-            play(e) {
-              if (player.current.playing) {
-                // player.current.error();
-                console.log(e);
-              } else {
-              }
-            },
-          },
+          // listeners: {
+          //   play(e) {
+          //     if (player.playing) {
+          //       // player.error();
+          //       console.log(e);
+          //     } else {
+          //     }
+          //   },
+          // },
         };
 
         player.current = new Plyr(videoRef.current, defaultOptions);
 
-        player.current.on("canplaythrough", (event) => {
+        player.current.once("progress", (event) => {
           setTimeout(() => {
             setTest(true);
           }, 100);
@@ -176,9 +173,9 @@ export default function VideoPlayer({ src }) {
 
   useEffect(() => {
     const a = setInterval(() => {
-      if (player.current.pla) {
+      if (player.current.playing) {
         // player.current.togglePlay();
-        console.log(player.current.play);
+        console.log(player.current.currentTime);
       }
     }, 2000);
 
@@ -188,18 +185,16 @@ export default function VideoPlayer({ src }) {
   return (
     <>
       <div>video</div>
-      <div>
+      <div className="text-slate-300">
         {playerPlay && playerReady && (
-          <Suspense fallback={<p>Loading feed...</p>}>
-            <video
-              id="video"
-              className={`hidden ${test ? "flex" : ""}`}
-              playsInline
-              controls
-              ref={videoRef}
-              // data-poster="https://image.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA/thumbnail.png?width=214&height=121&time=2"
-            />
-          </Suspense>
+          <video
+            id="video"
+            className={`hidden ${test ? "flex" : ""}`}
+            playsInline
+            controls
+            ref={videoRef}
+            // data-poster="https://image.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA/thumbnail.png?width=214&height=121&time=2"
+          />
         )}
       </div>
 
