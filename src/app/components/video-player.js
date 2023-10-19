@@ -140,13 +140,11 @@ export default function VideoPlayer({ src }) {
 
         player.current = new Plyr(videoRef.current, defaultOptions);
 
-        player.current.once("progress", (event) => {
-          setTimeout(() => {
-            setTest(true);
-          }, 100);
-        });
-
         setPlayerReady(true);
+
+        player.current.once("canplaythrough", () => {
+          setTest(true);
+        });
       }
     });
   }

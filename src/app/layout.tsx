@@ -22,10 +22,7 @@ export default function RootLayout({
         <head>
           <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
         </head>
-        <body className={inter.className}>
-          <Script src="https://cdn.plyr.io/3.7.8/plyr.js" />
-          {children}
-        </body>
+        <body className={inter.className}>{children}</body>
       </html>
     </AuthProvider>
   );
