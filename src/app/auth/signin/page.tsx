@@ -15,7 +15,7 @@ export default function Home() {
   });
 
   let newvideoUrl =
-    "https://stream.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA.m3u8";
+    "https://stream.mux.com/vuFiGm3QrXkIoeRePvjIf6nBI1FFC01mgOaZvmnaz82s.m3u8";
 
   function openModal() {
     setIsOpen(true);

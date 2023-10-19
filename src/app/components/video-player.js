@@ -93,7 +93,6 @@ export default function VideoPlayer({ src }) {
   }
 
   if (!video && Hls.isSupported() && !playerReady) {
-    console.log(hls.loadSource(src));
     hls.loadSource(src);
 
     hls.once(Hls.Events.LEVEL_LOADED, function () {
@@ -139,13 +138,11 @@ export default function VideoPlayer({ src }) {
           // },
         };
 
-        if (!playerReady) {
-          player.current = new Plyr(videoRef.current, defaultOptions);
+        player.current = new Plyr(videoRef.current, defaultOptions);
 
-          player.current.once("canplaythrough", (event) => {
-            setTest(true);
-          });
-        }
+        player.current.once("canplaythrough", (event) => {
+          setTest(true);
+        });
       }
     });
 
