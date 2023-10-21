@@ -1,6 +1,8 @@
 import { Suspense, useRef, useState, useCallback, memo } from "react";
 
-export const Video = memo((ref2) => <div>ola</div>);
+export const Video = memo((ref2) => {
+  return <div>ola</div>;
+});
 
 export default function VideoPlayer({ src }) {
   const [videoRef, setV] = useState(null);
