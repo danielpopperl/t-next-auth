@@ -1,6 +1,6 @@
 import { Suspense, useRef, useState, useCallback, memo } from "react";
 
-export const Video = memo((ref2) => {
+const Video = memo((ref2) => {
   return <div>ola</div>;
 });
 
