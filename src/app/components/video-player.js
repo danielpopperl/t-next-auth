@@ -1,11 +1,4 @@
-import {
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  memo,
-} from "react";
+import { useEffect, useRef, useState, useCallback, memo } from "react";
 import Hls from "hls.js";
 import Plyr from "plyr";
 
@@ -17,7 +10,7 @@ function VideoPlayer({ src }) {
 
   const [test, setTest] = useState(false);
 
-  let hls = new Hls();
+  let hls = new Hls({ maxBufferSize: 2 * 1000 * 1000 });
   let qualityHls = [];
   let defaultOptions = null;
 
