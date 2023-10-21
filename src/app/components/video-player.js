@@ -1,14 +1,6 @@
 import { Suspense, useRef, useState, useCallback, memo } from "react";
 
-const Video = memo((ref2) => (
-  <video
-    id="video"
-    playsInline
-    controls
-
-    // data-poster="https://image.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA/thumbnail.png?width=214&height=121&time=2"
-  />
-));
+const Video = memo((ref2) => <div>ola</div>);
 
 export default function VideoPlayer({ src }) {
   const [videoRef, setV] = useState(null);
