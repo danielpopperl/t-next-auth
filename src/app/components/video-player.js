@@ -10,8 +10,7 @@ function VideoPlayer({ src }) {
 
   const [test, setTest] = useState(false);
 
-  let hls = new Hls({ maxBufferSize: 2 * 1000 * 1000 });
-  let qualityHls = [];
+  const hls = new Hls({ maxBufferSize: 2 * 1000 * 1000 });
   let defaultOptions = null;
 
   const controlsMobile = `
@@ -85,9 +84,7 @@ function VideoPlayer({ src }) {
     "fullscreen",
   ];
 
-  const video = videoRef.current;
-
-  if (video && !Hls.isSupported()) {
+  if (videoRef.current && !Hls.isSupported()) {
     console.error(
       "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
     );
@@ -98,76 +95,74 @@ function VideoPlayer({ src }) {
   }
 
   useEffect(() => {
-    if (video && video.canPlayType("application/vnd.apple.mpegurl")) {
+    if (
+      videoRef.current &&
+      videoRef.current.canPlayType("application/vnd.apple.mpegurl")
+    ) {
       // This will run in safari, where HLS is supported natively
-      video.src = src;
+      videoRef.current.src = src;
     }
 
-    if (!video && Hls.isSupported() && !playerReady) {
+    if (!videoRef.current && Hls.isSupported()) {
       hls.loadSource(src);
 
-      hls.once(Hls.Events.LEVEL_LOADED, function () {
+      hls.on(Hls.Events.MANIFEST_PARSED, function () {
         // This will run in all other modern browsers
 
-        if (hls.levels.length >= 1 && qualityHls.length == 0) {
-          hls.levels.forEach((element, index) => {
-            qualityHls.push(element.height);
-          });
+        var qualityHls = hls.levels.map((l) => l.height);
 
-          hls.attachMedia(videoRef.current);
+        qualityHls.unshift(0);
+        qualityHls = qualityHls.reverse();
 
-          qualityHls = qualityHls.reverse();
-
-          defaultOptions = {
-            debug: true,
-            controls: controlsDefault,
-            settings: ["quality", "speed"],
-            muted: false,
-            hideControls: true,
-            quality: {
-              forced: true,
-              default: -1,
-              options: qualityHls,
-              onChange: (e) => updateQUality(e),
+        defaultOptions = {
+          debug: true,
+          controls: controlsDefault,
+          settings: ["quality", "speed"],
+          muted: false,
+          // hideControls: true,
+          loadSprite: true,
+          quality: {
+            default: 0,
+            forced: true,
+            options: qualityHls,
+            onChange: (e) => updateQUality(e),
+          },
+          i18n: {
+            qualityLabel: {
+              0: "Auto",
             },
-            speed: {
-              selected: 1,
-              options: [0.5, 1, 1.25, 1.5, 2],
-            },
-            // previewThumbnails: {
-            //   enabled: true,
-            //   src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
-            // },
-            // listeners: {
-            //   play(e) {
-            //     if (player.playing) {
-            //       // player.error();
-            //       console.log(e);
-            //     } else {
-            //     }
-            //   },
-            // },
-          };
+          },
+          speed: {
+            selected: 1,
+            options: [0.5, 1, 1.25, 1.5, 2],
+          },
+          // previewThumbnails: {
+          //   enabled: true,
+          //   src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
+          // },
+          // listeners: {
+          //   play(e) {
+          //     if (player.playing) {
+          //       // player.error();
+          //       console.log(e);
+          //     } else {
+          //     }
+          //   },
+          // },
+        };
 
-          player.current = new Plyr("#video", defaultOptions);
+        player.current = new Plyr("#video", defaultOptions);
 
-          player.current.once("canplaythrough", (event) => {
-            setTest(true);
-          });
-        }
+        player.current.once("canplaythrough", (event) => {
+          setTest(true);
+        });
+
+        hls.attachMedia(videoRef.current);
       });
 
       setPlayerReady(true);
     }
   }, [videoRef.current]);
-
-  function updateQUality(e) {
-    hls.levels.forEach((element, index) => {
-      if (element.height == e) {
-        hls.currentLevel = index;
-      }
-    });
-  }
 
   useEffect(() => {
     if (!player.current) return;
@@ -181,6 +176,19 @@ function VideoPlayer({ src }) {
 
     return () => clearInterval(a);
   }, [test]);
+
+  function updateQUality(e) {
+    if (e == 0) {
+      hls.currentLevel = -1;
+      return;
+    }
+
+    hls.levels.forEach((element, index) => {
+      if (element.height == e) {
+        hls.currentLevel = index;
+      }
+    });
+  }
 
   return (
     <>

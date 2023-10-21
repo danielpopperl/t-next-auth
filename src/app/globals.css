@@ -27,6 +27,11 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.plyr__menu__container {
+  max-height: 140px;
+  overflow-y: scroll;
+}
+
 .plyr__controls_c {
   display: block !important;
   position: absolute !important;
