@@ -3,7 +3,7 @@ import { Suspense, useRef, useState, useCallback, memo } from "react";
 const Video = memo((ref2) => {
   return <div>ola</div>;
 });
-
+Video.displayName = "MyApp";
 export default function VideoPlayer({ src }) {
   const [videoRef, setV] = useState(null);
   const v = useRef(videoRef);
