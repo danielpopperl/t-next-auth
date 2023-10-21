@@ -1,13 +1,25 @@
-import { Suspense, useRef, useState, useCallback, memo } from "react";
+import {
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  memo,
+} from "react";
+import Hls from "hls.js";
+import Plyr from "plyr";
 
-const Video = memo((ref2) => {
-  return <div>ola</div>;
-});
-Video.displayName = "MyApp";
-export default function VideoPlayer({ src }) {
-  const [videoRef, setV] = useState(null);
-  const v = useRef(videoRef);
-  v.current = videoRef;
+function VideoPlayer({ src }) {
+  const videoRef = useRef(null);
+  const player = useRef(null);
+  const [playerPlay, setPlayerPlay] = useState(false);
+  const [playerReady, setPlayerReady] = useState(false);
+
+  const [test, setTest] = useState(false);
+
+  let hls = new Hls();
+  let qualityHls = [];
+  let defaultOptions = null;
 
   const controlsMobile = `
     <div class="plyr__controls plyr__controls_c">
@@ -80,16 +92,122 @@ export default function VideoPlayer({ src }) {
     "fullscreen",
   ];
 
-  const ca = useCallback(() => {
-    console.log(5151);
-  }, []);
+  const video = videoRef.current;
+
+  if (video && !Hls.isSupported()) {
+    console.error(
+      "This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+    );
+  }
+
+  if (!playerPlay && playerReady) {
+    setPlayerPlay(true);
+  }
+
+  useEffect(() => {
+    if (video && video.canPlayType("application/vnd.apple.mpegurl")) {
+      // This will run in safari, where HLS is supported natively
+      video.src = src;
+    }
+
+    if (!video && Hls.isSupported() && !playerReady) {
+      hls.loadSource(src);
+
+      hls.once(Hls.Events.LEVEL_LOADED, function () {
+        // This will run in all other modern browsers
+
+        if (hls.levels.length >= 1 && qualityHls.length == 0) {
+          hls.levels.forEach((element, index) => {
+            qualityHls.push(element.height);
+          });
+
+          hls.attachMedia(videoRef.current);
+
+          qualityHls = qualityHls.reverse();
+
+          defaultOptions = {
+            debug: true,
+            controls: controlsDefault,
+            settings: ["quality", "speed"],
+            muted: false,
+            hideControls: true,
+            quality: {
+              forced: true,
+              default: -1,
+              options: qualityHls,
+              onChange: (e) => updateQUality(e),
+            },
+            speed: {
+              selected: 1,
+              options: [0.5, 1, 1.25, 1.5, 2],
+            },
+            // previewThumbnails: {
+            //   enabled: true,
+            //   src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
+            // },
+            // listeners: {
+            //   play(e) {
+            //     if (player.playing) {
+            //       // player.error();
+            //       console.log(e);
+            //     } else {
+            //     }
+            //   },
+            // },
+          };
+
+          player.current = new Plyr("#video", defaultOptions);
+
+          player.current.once("canplaythrough", (event) => {
+            setTest(true);
+          });
+        }
+      });
+
+      setPlayerReady(true);
+    }
+  }, [videoRef.current]);
+
+  function updateQUality(e) {
+    hls.levels.forEach((element, index) => {
+      if (element.height == e) {
+        hls.currentLevel = index;
+      }
+    });
+  }
+
+  useEffect(() => {
+    if (!player.current) return;
+
+    const a = setInterval(() => {
+      if (player.current.playing) {
+        console.log(player.current.currentTime);
+        // player.current.togglePlay();
+      }
+    }, 2000);
+
+    return () => clearInterval(a);
+  }, [test]);
 
   return (
     <>
       <div>video</div>
       <div className="text-slate-300">
-        <Video ref2={ca} />
+        {playerPlay ? (
+          <video
+            id="video"
+            className={`hidden ${test ? "flex" : ""}`}
+            playsInline
+            controls
+            ref={videoRef}
+            // data-poster="https://image.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA/thumbnail.png?width=214&height=121&time=2"
+          />
+        ) : (
+          <div>oiii</div>
+        )}
       </div>
     </>
   );
 }
+
+export default memo(VideoPlayer);
