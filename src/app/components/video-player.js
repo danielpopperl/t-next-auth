@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState, useCallback, memo } from "react";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import Plyr from "plyr";
 
-function VideoPlayer({ src }) {
+export default function VideoPlayer({ src }) {
   const videoRef = useRef(null);
   const player = useRef(null);
   const [playerPlay, setPlayerPlay] = useState(false);
@@ -10,7 +12,7 @@ function VideoPlayer({ src }) {
 
   const [test, setTest] = useState(false);
 
-  const hls = new Hls({ maxBufferSize: 2 * 1000 * 1000 });
+  const hls = new Hls({ maxBufferSize: 1 * 1000 * 100 });
   let defaultOptions = null;
 
   const controlsMobile = `
@@ -136,6 +138,9 @@ function VideoPlayer({ src }) {
             selected: 1,
             options: [0.5, 1, 1.25, 1.5, 2],
           },
+          loadSprite: true,
+          // iconUrl: "/assets/icon/logo.svg",
+          iconPrefix: "plyr",
           // previewThumbnails: {
           //   enabled: true,
           //   src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
@@ -151,18 +156,24 @@ function VideoPlayer({ src }) {
           // },
         };
 
-        player.current = new Plyr("#video", defaultOptions);
+        if (!player.current) {
+          player.current = new Plyr("#video", defaultOptions);
 
-        player.current.once("canplaythrough", (event) => {
-          setTest(true);
-        });
+          player.current.once("canplaythrough", (event) => {
+            setTest(true);
+          });
+        }
 
         hls.attachMedia(videoRef.current);
       });
 
       setPlayerReady(true);
     }
-  }, [videoRef.current]);
+
+    return () => {
+      if (player.current) player.current.destroyPlayer();
+    };
+  }, []);
 
   useEffect(() => {
     if (!player.current) return;
@@ -192,6 +203,14 @@ function VideoPlayer({ src }) {
 
   return (
     <>
+      <svg
+        style={{ position: "absolute" }}
+        width="700px"
+        viewBox="0 0 1000 500"
+        fill="black"
+      >
+        <use href="/assets/icon/logo.svg#123" />
+      </svg>
       <div>video</div>
       <div className="text-slate-300">
         {playerPlay ? (
@@ -210,5 +229,3 @@ function VideoPlayer({ src }) {
     </>
   );
 }
-
-export default memo(VideoPlayer);

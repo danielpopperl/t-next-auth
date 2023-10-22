@@ -1,46 +1,50 @@
-"use client";
-
-import React, { Suspense, useEffect, useState } from "react";
-import VideoPlayer from "../../components/video-player";
+import React, { Suspense, useEffect } from "react";
+// import VideoPlayer from "../../components/video-player";
 import Modal from "react-modal";
+import dynamic from "next/dynamic";
+
+const Vvv = dynamic(() => import("../../components/video-player"), {
+  ssr: false,
+});
 
 export default function Home() {
-  const [isModal, setIsOpen] = useState(false);
-  const [isWatchNow, setIsWatchNow] = useState(false);
-  const [videoUrl, setVideoUrl] = useState("");
-
-  useEffect(() => {
-    console.log("comming");
-    setVideoUrl(newvideoUrl);
-  });
+  // const [isModal, setIsOpen] = useState(false);
+  // const [isWatchNow, setIsWatchNow] = useState(false);
+  // const [videoUrl, setVideoUrl] = useState("");
 
   let newvideoUrl =
-    "https://stream.mux.com/U02oHQ0000aQuIA7eL00InrQu6Q3kt7hbwGbA5zqEKjwjn00.m3u8";
-  function openModal() {
-    setIsOpen(true);
-  }
+    "https://stream.mux.com/cUuQuJAebliWu34zXBotfdMrStoytkJ00JtjUgwjzgyU.m3u8";
 
-  function afterOpenModal() {
-    // subtitle.style.color = '#f00';
-  }
+  //   useEffect(() => {
+  //   console.log("comming");
+  //   setVideoUrl(newvideoUrl);
+  // });
 
-  function closeModal() {
-    setIsOpen(false);
-  }
+  // function openModal() {
+  //   setIsOpen(true);
+  // }
 
-  const playVideo = (type: any) => {
-    if (type === "trailer") {
-    } else if (type === "teaser") {
-      setIsWatchNow(true);
-      setVideoUrl(newvideoUrl);
-    } else {
-      setIsWatchNow(false);
-    }
-  };
+  // function afterOpenModal() {
+  //   // subtitle.style.color = '#f00';
+  // }
 
-  const closeVideoModal = () => {
-    setIsWatchNow(false);
-  };
+  // function closeModal() {
+  //   setIsOpen(false);
+  // }
+
+  // const playVideo = (type: any) => {
+  //   if (type === "trailer") {
+  //   } else if (type === "teaser") {
+  //     setIsWatchNow(true);
+  //     setVideoUrl(newvideoUrl);
+  //   } else {
+  //     setIsWatchNow(false);
+  //   }
+  // };
+
+  // const closeVideoModal = () => {
+  //   setIsWatchNow(false);
+  // };
 
   return (
     <>
@@ -49,10 +53,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
 
-      <div className="grid">
-        <Suspense fallback={<p>Loading feed...</p>}>
-          {videoUrl !== "" && <VideoPlayer src={videoUrl} />}
-        </Suspense>
+      <div className="block ml-5">
+        <div className="grid w-[600px] h-[500px]">
+          <Suspense fallback={<p>Loading feed...</p>}>
+            <Vvv src={newvideoUrl} />
+          </Suspense>
+        </div>
+
+        <div>ola</div>
       </div>
       {/* <main>
          <div className="grid">

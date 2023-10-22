@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.8.1",
+    "@types/fs-extra": "^11.0.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -36,6 +37,9 @@
     "autoprefixer": "^10",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
+    "fs-extra": "^11.1.1",
+    "glob": "^10.3.10",
+    "node-html-parser": "^6.1.10",
     "postcss": "^8",
     "prisma": "^5.4.2",
     "tailwindcss": "^3",
