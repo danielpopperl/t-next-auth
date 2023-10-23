@@ -10,8 +10,6 @@ export default function VideoPlayer({ src }) {
   const [playerPlay, setPlayerPlay] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
 
-  const [test, setTest] = useState(false);
-
   const hls = new Hls({ maxBufferSize: 1 * 1000 * 100 });
   let defaultOptions = null;
 
@@ -141,10 +139,10 @@ export default function VideoPlayer({ src }) {
           loadSprite: true,
           // iconUrl: "/assets/icon/logo.svg",
           iconPrefix: "plyr",
-          // previewThumbnails: {
-          //   enabled: true,
-          //   src: "https://image.mux.com/mUrG9IRA1hVNQnxyVpegHsBQuGQemrRufzpAzZSU02Iw/storyboard.vtt",
-          // },
+          previewThumbnails: {
+            enabled: true,
+            src: "https://image.mux.com/cUuQuJAebliWu34zXBotfdMrStoytkJ00JtjUgwjzgyU/storyboard.vtt",
+          },
           // listeners: {
           //   play(e) {
           //     if (player.playing) {
@@ -159,9 +157,9 @@ export default function VideoPlayer({ src }) {
         if (!player.current) {
           player.current = new Plyr("#video", defaultOptions);
 
-          player.current.once("canplaythrough", (event) => {
-            setTest(true);
-          });
+          // player.current.once("canplaythrough", (event) => {
+          // setPlayerReady(true);
+          // });
         }
 
         hls.attachMedia(videoRef.current);
@@ -186,7 +184,7 @@ export default function VideoPlayer({ src }) {
     }, 2000);
 
     return () => clearInterval(a);
-  }, [test]);
+  }, [playerReady]);
 
   function updateQUality(e) {
     if (e == 0) {
@@ -216,11 +214,11 @@ export default function VideoPlayer({ src }) {
         {playerPlay ? (
           <video
             id="video"
-            className={`hidden ${test ? "flex" : ""}`}
+            className={`hidden ${playerReady ? "flex" : ""}`}
             playsInline
             controls
             ref={videoRef}
-            // data-poster="https://image.mux.com/xGv2cg50000fteU01cxI98uqdSb1qhUgFt26ukVu02nx8EA/thumbnail.png?width=214&height=121&time=2"
+            poster="https://image.mux.com/cUuQuJAebliWu34zXBotfdMrStoytkJ00JtjUgwjzgyU/thumbnail.png?width=214&height=121&time=2"
           />
         ) : (
           <div>oiii</div>
